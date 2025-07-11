@@ -1,27 +1,27 @@
 import pygame
 from constants import *
+from player import Player  # ✅ Don’t forget this!
 
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    pygame.init()  # Initialize pygame
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+    dt = 0
 
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Create screen
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # ✅ Instantiate player
 
-    clock = pygame.time.Clock()  # ✅ FIXED: Capital C
-    dt = 0  # Delta time
-
-    while True:  # Game loop
-        for event in pygame.event.get():  # Event loop
+    while True:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return  # Exit the game
+                return
 
-        screen.fill((0, 0, 0))  # Paint black
-        pygame.display.flip()  # Refresh screen
+        player.update(dt)         # Update input/movement
+        screen.fill((0, 0, 0))    # Clear screen
+        player.draw(screen)       # Draw player
+        pygame.display.flip()     # Show updated frame
 
-        dt = clock.tick(60) / 1000  # Frame limiter & delta time
-
-if __name__ == "__main__":
-    main()
+        dt = clock.tick(60) / 1000  # Frame timing (delta time)
